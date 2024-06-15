@@ -1,0 +1,147 @@
+local colors = {
+    SchemeColor = Color3.fromRGB(100,233,255),
+    Background = Color3.fromRGB(0, 0, 0),
+    Header = Color3.fromRGB(0, 0, 0),
+    TextColor = Color3.fromRGB(255,255,255),
+    ElementColor = Color3.fromRGB(20, 20, 20)
+}
+
+local theme = ("Serpent")
+
+--[[Select Themes
+Themes:
+    LightTheme
+    DarkTheme
+    GrapeTheme
+    BloodTheme
+    Ocean
+    Midnight
+    Sentinel
+    Synapse
+    Serpent
+    ]]--
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Crimson Project 2", theme)
+
+local Tab = Window:NewTab("Auto Farm")
+local Section = Tab:NewSection("Auto Farm")
+
+Section:NewToggle("Walk to selected field", "Auto Walk", function(state)
+
+    if state then
+        selectedfield = state
+while selectedfield == true do
+wait()
+
+if state == true then Fieldwalk() end
+
+end
+    else
+        selectedfield = state
+
+end
+end)
+
+
+Section:NewToggle("Auto Dig", "Auto Dig", function(state)
+
+    if state then
+        AutoDig = state
+while AutoDig == true do
+wait()
+
+if state == true then IN1() end
+
+end
+    else
+        AutoDig = state
+
+end
+end)
+
+Section:NewToggle("Auto Token", "Walk to get token", function(state)
+
+    if state then
+        FarmTok = state
+while FarmTok == true do
+wait()
+
+if state == true then IN2() end
+
+end
+    else
+        FarmTok = state
+
+end
+end)
+
+Section:NewToggle("Auto Pop Bubble", "Walk to pop bubble", function(state)
+
+    if state then
+        Farmbulb = state
+while Farmbulb == true do
+wait()
+
+if state == true then IN3() end
+
+end
+    else
+        Farmbulb = state
+
+end
+end)
+
+function IN1()
+    wait(0.2)
+    game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ToolCollect"):FireServer()
+end
+
+
+function IN2()
+    wait()
+local token = workspace.Collectibles
+
+for _,v in pairs(token:GetDescendants()) do
+if v.Name == "FrontDecal" then
+if v.Texture == "rbxassetid://1629547638" then --Token Link
+    local ply = game.Players.LocalPlayer.Character.Humanoid
+    ply:MoveTo(v.Parent.Position)
+    ply.MoveToFinished:Wait()
+if v.Texture == "rbxassetid://1472256444" then --Baby Love
+        local ply = game.Players.LocalPlayer.Character.Humanoid
+        ply:MoveTo(v.Parent.Position)
+        ply.MoveToFinished:Wait()
+        if v.Texture == "rbxassetid://1442725244" then --Blue Bomb
+            local ply = game.Players.LocalPlayer.Character.Humanoid
+            ply:MoveTo(v.Parent.Position)
+            ply.MoveToFinished:Wait()
+    if v.Texture == "rbxassetid://1472135114" then --Honey Token
+        local ply = game.Players.LocalPlayer.Character.Humanoid
+        ply:MoveTo(v.Parent.Position)
+        ply.MoveToFinished:Wait()
+        if v.Texture == "rbxassetid://1442725244" then --White Bomb
+            local ply = game.Players.LocalPlayer.Character.Humanoid
+            ply:MoveTo(v.Parent.Position)
+            ply.MoveToFinished:Wait()
+end
+end
+end
+end
+end
+end
+end
+end
+
+function IN3()
+    wait()
+local bubles = workspace.Particles
+
+for _,v in pairs(bubles:GetDescendants()) do
+if v.Name == "Bubble" then
+    local ply = game.Players.LocalPlayer.Character.Humanoid
+    ply:MoveTo(v.Position)
+    ply.MoveToFinished:Wait()
+end
+end
+end
