@@ -103,10 +103,32 @@ function IN2()
 local token = workspace.Collectibles
 
 for _,v in pairs(token:GetDescendants()) do
-if v.Name == "C" then
+if v.Name == "FrontDecal" then
+if v.Texture == "rbxassetid://1629547638" then --Token Link
     local ply = game.Players.LocalPlayer.Character.Humanoid
-    ply:MoveTo(v.Position)
+    ply:MoveTo(v.Parent.Position)
     ply.MoveToFinished:Wait()
+if v.Texture == "rbxassetid://1472256444" then --Baby Love
+        local ply = game.Players.LocalPlayer.Character.Humanoid
+        ply:MoveTo(v.Parent.Position)
+        ply.MoveToFinished:Wait()
+        if v.Texture == "rbxassetid://1442725244" then --Blue Bomb
+            local ply = game.Players.LocalPlayer.Character.Humanoid
+            ply:MoveTo(v.Parent.Position)
+            ply.MoveToFinished:Wait()
+    if v.Texture == "rbxassetid://1472135114" then --Honey Token
+        local ply = game.Players.LocalPlayer.Character.Humanoid
+        ply:MoveTo(v.Parent.Position)
+        ply.MoveToFinished:Wait()
+        if v.Texture == "rbxassetid://1442725244" then --White Bomb
+            local ply = game.Players.LocalPlayer.Character.Humanoid
+            ply:MoveTo(v.Parent.Position)
+            ply.MoveToFinished:Wait()
+end
+end
+end
+end
+end
 end
 end
 end
