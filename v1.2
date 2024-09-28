@@ -1,6 +1,11 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("Crimson Project 2", "Serpent")
 
+local field2farm = "Sunflower Field"
+--[Bamboo Field, Spider Field, Hub Field, Strawberry Field, Coconut Field, Pine Tree Forest, Mountain Top Field, Dandelion Field, Stump Field, Pineapple Field, Pumpkin Field, Blue Flower Field, Sunflower Field, Ant Field, Mushroom Field, Cactus Field, Clover Field, Rose Field, Pepper Field]
+    local tweenspeed = 8
+
+
 local Tab = Window:NewTab("Auto Farm")
 local Section = Tab:NewSection("Auto Farm")
 
@@ -105,11 +110,10 @@ local TweenService = game:GetService("TweenService")
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-    local zone = workspace.FlowerZones["Hub Field"]
+    local zone = workspace.FlowerZones[field2farm]
     local zoneCenter = zone.Position
     local zoneSize = zone.Size
 
-    local tweenspeed = 2 
     local minBound = zone.Position - zone.Size / 2
     local maxBound = zone.Position + zone.Size / 2
 
