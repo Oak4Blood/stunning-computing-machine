@@ -1,7 +1,7 @@
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Oak4Blood/stunning-computing-machine/refs/heads/main/NoAfk"))()
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("Crimson Project 2", "Serpent")
-local tweenspeed = 5
+local tweenspeed = 30
 local Tab = Window:NewTab("Auto Farm")
 local Section = Tab:NewSection("Auto Farm")
 
@@ -13,6 +13,31 @@ _G.randomwalkActive = true
 
 Section:NewDropdown("Field to farm", "Select", Fields, function(Farmlands)
     Farmland = Farmlands
+end)
+
+Section:NewButton("Hive Check", "ButtonInfo", function()
+local checkhive = workspace.HivePlatforms
+local function findPlayerPositionInCircle(circle)
+    local surfaceGui = circle:FindFirstChild("SurfaceGui")
+    if surfaceGui and surfaceGui:IsA("SurfaceGui") then
+        local textLabel = surfaceGui:FindFirstChild("TextLabel")
+        if textLabel and textLabel:IsA("TextLabel") then
+            local playerName = game.Players.LocalPlayer.Character.Name
+            if textLabel.Text == playerName then
+                return circle.Position -- คืนตำแหน่งของ Circle
+            end
+        end
+    end
+    return nil
+end
+for _, platform in pairs(checkhive:GetDescendants()) do
+    if platform.Name == "Circle" then
+        local position = findPlayerPositionInCircle(platform)
+        if position then
+            print(position)
+        end
+    end
+end
 end)
 
 Section:NewToggle("Auto Convert", "Auto Convert", function(state)
