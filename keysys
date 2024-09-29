@@ -1,0 +1,28 @@
+local correctKey = "randomtext"
+local screenGui = Instance.new("ScreenGui")
+local textbox = Instance.new("TextBox")
+local button = Instance.new("TextButton")
+local messageLabel = Instance.new("TextLabel")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+textbox.Size = UDim2.new(0, 200, 0, 50)
+textbox.Position = UDim2.new(0.5, -100, 0.4, -25)
+textbox.PlaceholderText = "Enter your key here"
+textbox.Parent = screenGui
+button.Size = UDim2.new(0, 100, 0, 50)
+button.Position = UDim2.new(0.5, -50, 0.5, -25)
+button.Text = "Submit"
+button.Parent = screenGui
+messageLabel.Size = UDim2.new(0, 200, 0, 50)
+messageLabel.Position = UDim2.new(0.5, -100, 0.6, -25)
+messageLabel.Parent = screenGui
+button.MouseButton1Click:Connect(function()
+    local enteredKey = textbox.Text
+    
+    if enteredKey == correctKey then
+        messageLabel.Text = "Correct!"
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Oak4Blood/stunning-computing-machine/refs/heads/main/v1.6"))()
+        screenGui:Destroy()
+    else
+        messageLabel.Text = "Incorrect! Try again."
+    end
+end)
