@@ -42,6 +42,7 @@ end)
 
 Section:NewToggle("Auto Dig", "Auto Dig", function(state)
 
+
     if state then
         AutoDig = state
 while AutoDig == true do
@@ -54,6 +55,7 @@ end
 end
     else
         AutoDig = state
+
 
 end
 end)
@@ -72,7 +74,21 @@ end
 end
 end)
 
+Section:NewToggle("Randomly Walk", " ", function(state)
+
+    if state then
+        _G.rfarm = state
+while _G.rfarm == true do
+wait()
+walkRandomly()
+end
+    else
+        _G.rfarm = state
+end
+end)
+
 Section:NewToggle("Anti Leave Field", " ", function(state)
+
 
     if state then
         _G.anfarm = state
@@ -99,6 +115,7 @@ local hitboxSize = Vector3.new(80, 10, 80)
             local inRangeX = math.abs(humanoidRootPart.Position.X - part.Position.X) <= hitboxSize.X / 2
             local inRangeY = math.abs(humanoidRootPart.Position.Y - part.Position.Y) <= hitboxSize.Y / 2
             local inRangeZ = math.abs(humanoidRootPart.Position.Z - part.Position.Z) <= hitboxSize.Z / 2
+
 
             if inRangeX and inRangeY and inRangeZ then
                 local humanoid = character:WaitForChild("Humanoid")
@@ -128,5 +145,32 @@ local humanoidRootPart = character.HumanoidRootPart
         tween:Play()
         tween.Completed:Wait()  
         IN2()
+    end
+end
+
+local function getRandomPositionInField()
+   
+local field = workspace.FlowerZones[Farmland]
+local fieldCenter = field.Position
+local fieldSize = field.Size
+local minBound = fieldCenter - fieldSize / 2
+local maxBound = fieldCenter + fieldSize / 2
+    local randomX = math.random(minBound.X, maxBound.X)
+    local randomZ = math.random(minBound.Z, maxBound.Z)
+    local randomY = fieldCenter.Y
+    return Vector3.new(randomX, randomY, randomZ)
+end
+
+function walkRandomly()
+    while true do
+wait()
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoid = character:WaitForChild("Humanoid")
+        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+        local targetPosition = getRandomPositionInField()
+        humanoid:MoveTo(targetPosition)
+        humanoid.MoveToFinished:Wait()
+        wait(math.random(1, 5))
     end
 end
