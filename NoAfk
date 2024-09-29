@@ -1,0 +1,6 @@
+local afk = game:service('VirtualUser')
+game:service('Players').LocalPlayer.Idled:connect(function()
+    afk:CaptureController()
+    afk:ClickButton2(Vector2.new())
+    print("Anti Afk Action")
+end)
