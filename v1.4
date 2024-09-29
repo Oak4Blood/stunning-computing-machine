@@ -4,6 +4,14 @@ local tweenspeed = 5
 local Tab = Window:NewTab("Auto Farm")
 local Section = Tab:NewSection("Auto Farm")
 
+local bb = game:service('VirtualUser')
+
+game:service('Players').LocalPlayer.Idled:connect(function()
+    bb:CaptureController()
+    bb:ClickButton2(Vector2.new())
+    print("Anti Afk Action")
+end)
+
 Fields = {"Bamboo Field","Spider Field","Hub Field","Strawberry Field","Coconut Field","Pine Tree Forest","Mountain Top Field","Dandelion Field","Stump Field","Pineapple Field","Pumpkin Field","Blue Flower Field","Sunflower Field","Ant Field","Mushroom Field","Cactus Field","Clover Field","Rose Field","Pepper Field"}
 
 Section:NewDropdown("Field to farm", "Select", Fields, function(Farmlands)
@@ -11,7 +19,7 @@ Section:NewDropdown("Field to farm", "Select", Fields, function(Farmlands)
 end)
 
 Section:NewButton("Delete Teleport", "ButtonInfo", function()
-    local tpa = game.Map.Ground.Campsite
+    local tpa = workspace.Map.Ground.Campsite
     for i,v in pairs(tpa:GetDescendants()) do
         if v.Name == "TradeHubPortalPart" then
             v:Destroy()
