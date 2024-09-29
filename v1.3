@@ -1,0 +1,131 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Crimson Project 2", "Serpent")
+local tweenspeed = 5
+local Tab = Window:NewTab("Auto Farm")
+local Section = Tab:NewSection("Auto Farm")
+
+Fields = {"Bamboo Field","Spider Field","Hub Field","Strawberry Field","Coconut Field","Pine Tree Forest","Mountain Top Field","Dandelion Field","Stump Field","Pineapple Field","Pumpkin Field","Blue Flower Field","Sunflower Field","Ant Field","Mushroom Field","Cactus Field","Clover Field","Rose Field","Pepper Field"}
+
+Section:NewDropdown("Field to farm", "Select", Fields, function(Farmlands)
+    Farmland = Farmlands
+end)
+
+Section:NewButton("Delete Teleport", "ButtonInfo", function()
+    local tpa = game.Map.Ground.Campsite
+    for i,v in pairs(tpa:GetDescendants()) do
+        if v.Name == "TradeHubPortalPart" then
+            v:Destroy()
+        end
+    end
+end)
+
+Section:NewToggle("Show your Hitbox", " ", function(state)
+    if state then
+    _G.Hitbox = state
+if _G.Hitbox == true then
+wait()
+local backupsize = game.Players.LocalPlayer.Character.HumanoidRootPart.Size
+game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = false
+game.Players.LocalPlayer.Character.HumanoidRootPart.Transparency = 0.3
+game.Players.LocalPlayer.Character.HumanoidRootPart.Size = Vector3.new(80, 0.1, 80)
+end
+    else
+        _G.Hitbox = state
+if _G.Hitbox == false then
+wait()
+game.Players.LocalPlayer.Character.HumanoidRootPart.Transparency = 1
+game.Players.LocalPlayer.Character.HumanoidRootPart.Size = backupsize
+end
+end
+end)
+
+Section:NewToggle("Auto Dig", "Auto Dig", function(state)
+
+    if state then
+        AutoDig = state
+while AutoDig == true do
+wait()
+
+if state == true then
+wait(0.1)
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ToolCollect"):FireServer()
+end
+end
+    else
+        AutoDig = state
+
+end
+end)
+
+Section:NewToggle("Farm Token", " ", function(state)
+
+    if state then
+        _G.afarm = state
+while _G.afarm == true do
+wait()
+IN2()
+IN3()
+end
+    else
+        _G.afarm = state
+end
+end)
+
+Section:NewToggle("Anti Leave Field", " ", function(state)
+
+    if state then
+        _G.anfarm = state
+while _G.anfarm == true do
+wait()
+IN3()
+end
+    else
+        _G.anfarm = state
+end
+end)
+
+function IN2()
+local TweenService = game:GetService("TweenService")
+local player = game.Players.LocalPlayer
+local character = player.Character
+local humanoidRootPart = character.HumanoidRootPart
+local hitboxSize = Vector3.new(80, 10, 80)
+
+    local partsInWorkspace = workspace.Collectibles:GetDescendants()
+
+    for _, part in pairs(partsInWorkspace) do
+        if part.Name == "C" then
+            local inRangeX = math.abs(humanoidRootPart.Position.X - part.Position.X) <= hitboxSize.X / 2
+            local inRangeY = math.abs(humanoidRootPart.Position.Y - part.Position.Y) <= hitboxSize.Y / 2
+            local inRangeZ = math.abs(humanoidRootPart.Position.Z - part.Position.Z) <= hitboxSize.Z / 2
+
+            if inRangeX and inRangeY and inRangeZ then
+                local humanoid = character:WaitForChild("Humanoid")
+                humanoid:MoveTo(part.Position)
+                humanoid.MoveToFinished:Wait()
+        IN3()
+            end
+        end
+    end
+end
+
+function IN3()
+local TweenService = game:GetService("TweenService")
+local player = game.Players.LocalPlayer
+local character = player.Character
+local humanoidRootPart = character.HumanoidRootPart
+    local zone = workspace.FlowerZones[Farmland]
+    local zoneCenter = zone.Position
+    local zoneSize = zone.Size
+    local minBound = zone.Position - zone.Size / 2
+    local maxBound = zone.Position + zone.Size / 2
+    if humanoidRootPart.Position.X < minBound.X or humanoidRootPart.Position.X > maxBound.X
+    or humanoidRootPart.Position.Z < minBound.Z or humanoidRootPart.Position.Z > maxBound.Z then
+        local goalCFrame = CFrame.new(zoneCenter)
+        local tweenInfo = TweenInfo.new(tweenspeed, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tween = TweenService:Create(humanoidRootPart, tweenInfo, {CFrame = goalCFrame})
+        tween:Play()
+        tween.Completed:Wait()  
+        IN2()
+    end
+end
