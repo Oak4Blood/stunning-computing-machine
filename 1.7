@@ -1,0 +1,180 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Oak4Blood/stunning-computing-machine/refs/heads/main/NoAfk"))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Crimson Project 2", "Serpent")
+local tweenspeed = 5
+local Tab = Window:NewTab("Auto Farm")
+local Section = Tab:NewSection("Auto Farm")
+
+Fields = {"Bamboo Field","Spider Field","Hub Field","Strawberry Field","Coconut Field","Pine Tree Forest","Mountain Top Field","Dandelion Field","Stump Field","Pineapple Field","Pumpkin Field","Blue Flower Field","Sunflower Field","Ant Field","Mushroom Field","Cactus Field","Clover Field","Rose Field","Pepper Field"}
+
+_G.in2Active = true
+_G.in3Active = true
+_G.randomwalkActive = true
+
+Section:NewDropdown("Field to farm", "Select", Fields, function(Farmlands)
+    Farmland = Farmlands
+end)
+
+Section:NewToggle("Auto Convert", "Auto Convert", function(state)
+    if state then
+        Autoconv = state
+        while Autoconv == true do
+            wait(1)
+            local player = game.Players.LocalPlayer
+            local pollen = player.CoreStats.Pollen.Value
+            local capacity = player.CoreStats.Capacity.Value
+
+            if pollen >= capacity then
+                print("max cap")
+                _G.in2Active = false
+                _G.in3Active = false
+                _G.randomwalkActive = false
+            elseif pollen == 0 then
+                _G.in2Active = true
+                _G.in3Active = true
+                _G.randomwalkActive = true
+            end
+        end
+    else
+        Autoconv = state
+        wait()
+    end
+end)
+
+Section:NewToggle("Auto Dig", "Auto Dig", function(state)
+
+
+    if state then
+        AutoDig = state
+while AutoDig == true do
+wait()
+
+if state == true then
+wait(0.1)
+game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("ToolCollect"):FireServer()
+end
+end
+    else
+        AutoDig = state
+
+
+end
+end)
+
+Section:NewToggle("Farm Token", " ", function(state)
+
+    if state then
+        _G.afarm = state
+while _G.afarm == true do
+wait()
+IN2()
+IN3()
+end
+    else
+        _G.afarm = state
+end
+end)
+
+Section:NewToggle("Randomly Walk", " ", function(state)
+
+    if state then
+        _G.rfarm = state
+while _G.rfarm == true do
+wait()
+walkRandomly()
+end
+    else
+        _G.rfarm = state
+end
+end)
+
+Section:NewToggle("Anti Leave Field", " ", function(state)
+
+
+    if state then
+        _G.anfarm = state
+while _G.anfarm == true do
+wait()
+IN3()
+end
+    else
+        _G.anfarm = state
+end
+end)
+
+function IN2()
+if _G.in2Active == false then return end
+local TweenService = game:GetService("TweenService")
+local player = game.Players.LocalPlayer
+local character = player.Character
+local humanoidRootPart = character.HumanoidRootPart
+local hitboxSize = Vector3.new(80, 10, 80)
+
+    local partsInWorkspace = workspace.Collectibles:GetDescendants()
+
+    for _, part in pairs(partsInWorkspace) do
+        if part.Name == "C" then
+            local inRangeX = math.abs(humanoidRootPart.Position.X - part.Position.X) <= hitboxSize.X / 2
+            local inRangeY = math.abs(humanoidRootPart.Position.Y - part.Position.Y) <= hitboxSize.Y / 2
+            local inRangeZ = math.abs(humanoidRootPart.Position.Z - part.Position.Z) <= hitboxSize.Z / 2
+
+
+            if inRangeX and inRangeY and inRangeZ then
+                local humanoid = character:WaitForChild("Humanoid")
+                humanoid:MoveTo(part.Position)
+                humanoid.MoveToFinished:Wait()
+        IN3()
+            end
+        end
+    end
+end
+
+function IN3()
+if _G.in3Active == false then return end
+local TweenService = game:GetService("TweenService")
+local player = game.Players.LocalPlayer
+local character = player.Character
+local humanoidRootPart = character.HumanoidRootPart
+local zone = workspace.FlowerZones[Farmland]
+local zoneCenter = zone.Position
+local zoneSize = zone.Size
+local minBound = zone.Position - zone.Size / 2
+local maxBound = zone.Position + zone.Size / 2
+if humanoidRootPart.Position.X < minBound.X or humanoidRootPart.Position.X > maxBound.X
+or humanoidRootPart.Position.Z < minBound.Z or humanoidRootPart.Position.Z > maxBound.Z then
+    local goalCFrame = CFrame.new(zoneCenter) * CFrame.new(0, 4, 0)
+    local currentPosition = humanoidRootPart.Position
+    local targetPosition = zoneCenter + Vector3.new(0, 4, 0)
+    local distance = (currentPosition - targetPosition).Magnitude
+    local tweenTime = distance / tweenspeed
+    local tweenInfo = TweenInfo.new(tweenTime, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    local tween = TweenService:Create(humanoidRootPart, tweenInfo, {CFrame = goalCFrame})
+    tween:Play()
+    tween.Completed:Wait()
+    IN2()
+end
+end
+
+function walkRandomlyInField()
+    while _G.randomwalkActive == true do
+        wait()
+        if _G.randomwalkActive == false then
+            break
+        end
+        local field = workspace.FlowerZones[Farmland]
+        local fieldCenter = field.Position
+        local fieldSize = field.Size
+        local minBound = fieldCenter - fieldSize / 2
+        local maxBound = fieldCenter + fieldSize / 2
+        local randomX = math.random(minBound.X, maxBound.X)
+        local randomZ = math.random(minBound.Z, maxBound.Z)
+        local randomY = fieldCenter.Y
+        local targetPosition = Vector3.new(randomX, randomY, randomZ)
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoid = character:WaitForChild("Humanoid")
+        humanoid:MoveTo(targetPosition)
+        humanoid.MoveToFinished:Wait()
+        wait(math.random(1, 6))
+    end
+end
